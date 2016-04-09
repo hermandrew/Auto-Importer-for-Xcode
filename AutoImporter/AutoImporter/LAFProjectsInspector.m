@@ -233,7 +233,6 @@
     [LAFImportListViewController presentInView:[_editor view] items:items alreadyImported:alreadyImported searchText:searchString];
 }
 
-
 #pragma mark - LAFImportListViewControllerDelegate
 
 - (void)itemSelected:(NSString *)item {

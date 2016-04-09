@@ -13,6 +13,8 @@
 #import "NSString+Extensions.h"
 
 NSString * const LAFAddImportOperationImportRegexPattern = @"^#.*(import|include).*[\",<].*[\",>]";
+NSString * const LAFImportGroupRegexFormatPattern = @"^\/\/ %@\s?$";
+NSString * const LAFImportGroupClassEndingRegexFormatPattern = @"%@.h";
 
 @interface LAFIDESourceCodeEditor()
 
@@ -106,16 +108,32 @@ NSString * const LAFAddImportOperationImportRegexPattern = @"^#.*(import|include
 }
 
 - (LAFImportResult)addImport:(NSString *)statement {
-    BOOL duplicate = NO;
+    NSString *importGroup = [self importGroupForStatment:statement];
+    
     DVTSourceTextStorage *textStorage = [self currentTextStorage];
-    NSInteger lastLine = [self appropriateLine:textStorage statement:statement duplicate:&duplicate];
+    BOOL importGroupExists = NO;
+    BOOL duplicate = NO;
+    NSInteger lastLine = [self appropriateLine:textStorage
+                                     statement:statement
+                                     duplicate:&duplicate
+                                       inGroup:importGroup
+                                   groupExists:&importGroupExists];
     
     if (lastLine != NSNotFound) {
         NSString *importString = [NSString stringWithFormat:@"%@\n", statement];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [textStorage mhInsertString:importString
-                                 atLine:lastLine+1];
+            if (importGroupExists)
+            {
+                [textStorage mhInsertString:importString
+                                     atLine:lastLine+1];
+            }
+            else
+            {
+                NSString *string = [NSString stringWithFormat:@"\n// %@\n%@", importGroup, importString];
+                [textStorage mhInsertString:string
+                                     atLine:lastLine+1];
+            }
         });
     }
     
@@ -126,21 +144,73 @@ NSString * const LAFAddImportOperationImportRegexPattern = @"^#.*(import|include
     }
 }
 
-- (NSUInteger)appropriateLine:(DVTSourceTextStorage *)source statement:(NSString *)statement duplicate:(BOOL *)duplicate {
+- (NSString *)importGroupForStatment:(NSString *)statement
+{
+    NSDictionary *importGroups = @
+    {
+        @"View" : @"Views",
+        @"Cell" : @"Views",
+        @"Label" : @"Views",
+        @"Button" : @"Views",
+        @"ViewController" : @"View Controllers"
+    };
+    
+    for (NSString *thisKey in importGroups.allKeys)
+    {
+        NSRegularExpression *headerRegex = [self importGroupHeaderRegex:thisKey];
+        NSInteger numberOfMatch = [headerRegex numberOfMatchesInString:statement
+                                                               options:0
+                                                                 range:NSMakeRange(0, statement.length)];
+        if (numberOfMatch)
+        {
+            return importGroups[thisKey];
+        }
+    }
+    
+    return @"Other";
+}
+
+- (NSUInteger)appropriateLine:(DVTSourceTextStorage *)source
+                    statement:(NSString *)statement
+                    duplicate:(BOOL *)duplicate
+                      inGroup:(NSString *)group
+                  groupExists:(BOOL *)groupExists;
+{
     __block NSUInteger lineNumber = NSNotFound;
     __block NSUInteger currentLineNumber = 0;
     __block BOOL foundDuplicate = NO;
-    [source.string enumerateLinesUsingBlock:^(NSString *line, BOOL *stop) {
-        if ([self isImportString:line]) {
-            if ([line isEqual:statement]) {
+    __block BOOL foundGroup = NO;
+    __block BOOL continueIncrementing = YES;
+    
+    [source.string enumerateLinesUsingBlock:^(NSString *line, BOOL *stop)
+    {
+        if ([self isImportString:line])
+        {
+            if ([line isEqual:statement])
+            {
                 foundDuplicate = YES;
                 *stop = YES;
                 return;
             }
-            lineNumber = currentLineNumber;
+            
+            if (continueIncrementing)
+            {
+                lineNumber = currentLineNumber;
+            }
         }
+        else if ([self isGroupString:line forGroup:group])
+        {
+            foundGroup = YES;
+        }
+        else if (foundGroup)
+        {
+            continueIncrementing = NO;
+        }
+        
         currentLineNumber++;
     }];
+    
+    *groupExists = foundGroup;
     
     if (foundDuplicate) {
         *duplicate = YES;
@@ -164,10 +234,51 @@ NSString * const LAFAddImportOperationImportRegexPattern = @"^#.*(import|include
     return lineNumber;
 }
 
+- (NSRegularExpression *)importGroupHeaderRegex:(NSString *)headerEnding
+{
+    static NSMutableDictionary *regexes;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+    {
+        regexes = [NSMutableDictionary dictionary];
+    });
+    
+    if (!regexes[headerEnding])
+    {
+        NSString *thisPattern = [NSString stringWithFormat:LAFImportGroupClassEndingRegexFormatPattern, headerEnding];
+        regexes[headerEnding] = [[NSRegularExpression alloc] initWithPattern:thisPattern
+                                                                     options:NSRegularExpressionAnchorsMatchLines
+                                                                       error:nil];
+    }
+    
+    return regexes[headerEnding];
+}
+
+- (NSRegularExpression *)importGroupRegex:(NSString *)group
+{
+    static NSMutableDictionary *regexes;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^
+                  {
+                      regexes = [NSMutableDictionary dictionary];
+                  });
+    
+    if (!regexes[group])
+    {
+        NSString *thisPattern = [NSString stringWithFormat:LAFImportGroupRegexFormatPattern, group];
+        regexes[group] = [[NSRegularExpression alloc] initWithPattern:thisPattern
+                                                              options:NSRegularExpressionAnchorsMatchLines
+                                                                error:nil];
+    }
+    
+    return regexes[group];
+}
+
 - (NSRegularExpression *)importRegex {
     static NSRegularExpression *_regex = nil;
     if (!_regex) {
         NSError *error = nil;
+        
         _regex = [[NSRegularExpression alloc] initWithPattern:LAFAddImportOperationImportRegexPattern
                                                       options:0
                                                         error:&error];
@@ -178,6 +289,13 @@ NSString * const LAFAddImportOperationImportRegexPattern = @"^#.*(import|include
 - (BOOL)isImportString:(NSString *)string {
     NSRegularExpression *regex = [self importRegex];
     NSInteger numberOfMatches = [regex numberOfMatchesInString:string options:0 range:NSMakeRange(0, string.length)];
+    return numberOfMatches > 0;
+}
+
+- (BOOL)isGroupString:(NSString *)line forGroup:(NSString *)group
+{
+    NSRegularExpression *regex = [self importGroupRegex:group];
+    NSInteger numberOfMatches= [regex numberOfMatchesInString:line options:0 range:NSMakeRange(0, line.length)];
     return numberOfMatches > 0;
 }
 
