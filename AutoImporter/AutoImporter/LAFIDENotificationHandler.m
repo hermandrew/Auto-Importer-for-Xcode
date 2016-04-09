@@ -10,6 +10,9 @@
 #import "LAFProjectsInspector.h"
 #import "XCFXcodePrivate.h"
 
+// Other
+#import "LAFImportGroupMapping.h"
+
 @implementation LAFIDENotificationHandler
 
 + (instancetype)sharedHandler {
@@ -66,6 +69,7 @@
     
     if (filePath) {
         [[LAFProjectsInspector sharedInspector] updateProject:filePath doneBlock:nil];
+        [[LAFImportGroupMapping sharedMapping] addMappingForProjectAtPath:filePath];
     }
 }
 

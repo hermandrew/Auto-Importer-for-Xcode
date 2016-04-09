@@ -14,6 +14,9 @@
 #import "LAFIDESourceCodeEditor.h"
 #import "LAFIdentifier.h"
 
+// Other
+#import "LAFImportGroupMapping.h"
+
 @interface LAFProjectsInspector () <LAFImportListViewControllerDelegate>
 @property (nonatomic, strong) NSMapTable *projectsByWorkspace;
 @property (nonatomic, strong) LAFIDESourceCodeEditor *editor;
@@ -113,6 +116,8 @@
             doneBlock();
         }
     }];
+    
+    [[LAFImportGroupMapping sharedMapping] addMappingForProjectAtPath:projectPath];
 }
 
 - (void)closeProject:(NSString *)projectPath {

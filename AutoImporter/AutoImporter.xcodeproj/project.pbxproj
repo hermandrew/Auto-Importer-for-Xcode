@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		90A44E1F936B4B668EE81A3D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 254E2E54B2C942A493C01F55 /* libPods.a */; };
+		BEA8368D1CB98D4A005BF0B4 /* LAFImportGroupMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = BEA8368C1CB98D4A005BF0B4 /* LAFImportGroupMapping.m */; };
 		C4C9E477D59D4E429E792676 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 254E2E54B2C942A493C01F55 /* libPods.a */; };
 		E22C5B3919DDB27C00F11123 /* LAFIDESourceCodeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = E22C5B3819DDB27C00F11123 /* LAFIDESourceCodeEditor.m */; };
 		E22C5B3A19DDB27C00F11123 /* LAFIDESourceCodeEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = E22C5B3819DDB27C00F11123 /* LAFIDESourceCodeEditor.m */; };
@@ -92,6 +93,8 @@
 		254E2E54B2C942A493C01F55 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E530B97FAF5EFF3B02DAA89 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		845E8E503B30B9CA14DF168F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		BEA8368B1CB98D4A005BF0B4 /* LAFImportGroupMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LAFImportGroupMapping.h; sourceTree = "<group>"; };
+		BEA8368C1CB98D4A005BF0B4 /* LAFImportGroupMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LAFImportGroupMapping.m; sourceTree = "<group>"; };
 		E22C5B3619DD842900F11123 /* LAFLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LAFLogger.h; sourceTree = "<group>"; };
 		E22C5B3719DDB27C00F11123 /* LAFIDESourceCodeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LAFIDESourceCodeEditor.h; sourceTree = "<group>"; };
 		E22C5B3819DDB27C00F11123 /* LAFIDESourceCodeEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LAFIDESourceCodeEditor.m; sourceTree = "<group>"; };
@@ -247,6 +250,8 @@
 				E2AD810119C690AD008D33E1 /* LAFProjectHeaderCache.m */,
 				E2733B1A19C763BA00F55A20 /* LAFProjectsInspector.h */,
 				E2733B1B19C763BA00F55A20 /* LAFProjectsInspector.m */,
+				BEA8368B1CB98D4A005BF0B4 /* LAFImportGroupMapping.h */,
+				BEA8368C1CB98D4A005BF0B4 /* LAFImportGroupMapping.m */,
 				E264C7D519CC9CEA00D8DAF7 /* LAFImportListViewController.h */,
 				E264C7D619CC9CEA00D8DAF7 /* LAFImportListViewController.m */,
 				E264C7D219CC9BD700D8DAF7 /* LAFImportListView.xib */,
@@ -575,6 +580,7 @@
 				E26F413719C0C56B00527019 /* NSString+XCAdditions.m in Sources */,
 				E2D78B1519EFF046009C21B7 /* LAFClassProcessor.m in Sources */,
 				E26F412319C0C52300527019 /* NSString+MHNSRange.m in Sources */,
+				BEA8368D1CB98D4A005BF0B4 /* LAFImportGroupMapping.m in Sources */,
 				E2D78B1D19EFF0AC009C21B7 /* LAFProtocolProcessor.m in Sources */,
 				E264C7D719CC9CEA00D8DAF7 /* LAFImportListViewController.m in Sources */,
 			);

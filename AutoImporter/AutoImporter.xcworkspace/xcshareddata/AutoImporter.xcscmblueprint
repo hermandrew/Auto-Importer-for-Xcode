@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "CB7C26E2D6B78DDB0A19B1933B27B6E1FF50467C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "CB7C26E2D6B78DDB0A19B1933B27B6E1FF50467C" : 0,
+    "74269FAAACB343072CBE43772CB1F0F024335734" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "59527348-8DB2-49B1-9825-CA75D983C228",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "CB7C26E2D6B78DDB0A19B1933B27B6E1FF50467C" : "Auto-Importer-for-Xcode\/",
+    "74269FAAACB343072CBE43772CB1F0F024335734" : "frenchgirls-ios\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "AutoImporter",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "AutoImporter\/AutoImporter.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/bitbucket.org\/frenchgirls\/frenchgirls-ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "74269FAAACB343072CBE43772CB1F0F024335734"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/hermandrew\/Auto-Importer-for-Xcode.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CB7C26E2D6B78DDB0A19B1933B27B6E1FF50467C"
+    }
+  ]
+}

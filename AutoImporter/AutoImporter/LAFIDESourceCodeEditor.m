@@ -12,6 +12,9 @@
 #import "NSTextView+Operations.h"
 #import "NSString+Extensions.h"
 
+// Other
+#import "LAFImportGroupMapping.h"
+
 NSString * const LAFAddImportOperationImportRegexPattern = @"^#.*(import|include).*[\",<].*[\",>]";
 NSString * const LAFImportGroupRegexFormatPattern = @"^\/\/ %@\s?$";
 NSString * const LAFImportGroupClassEndingRegexFormatPattern = @"%@.h";
@@ -146,14 +149,7 @@ NSString * const LAFImportGroupClassEndingRegexFormatPattern = @"%@.h";
 
 - (NSString *)importGroupForStatment:(NSString *)statement
 {
-    NSDictionary *importGroups = @
-    {
-        @"View" : @"Views",
-        @"Cell" : @"Views",
-        @"Label" : @"Views",
-        @"Button" : @"Views",
-        @"ViewController" : @"View Controllers"
-    };
+    NSDictionary *importGroups = [[LAFImportGroupMapping sharedMapping] allMappings];
     
     for (NSString *thisKey in importGroups.allKeys)
     {
